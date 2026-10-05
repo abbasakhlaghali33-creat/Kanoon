@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="تست خودشناسی کانون سلامت روان دانشکده">
+<title>تو کدوم مدلی؟ | کانون سلامت روان</title>
+<style>
+:root{--bg:#f7f5ff;--card:#fff;--ink:#242338;--muted:#6f6c80;--accent:#6846d9;--accent2:#efeaff;--line:#e8e4f2}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#f8f6ff,#eefaf7);color:var(--ink);font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:780px;margin:auto;padding:20px 15px 50px}.card{background:var(--card);border-radius:28px;padding:28px;box-shadow:0 15px 50px #312e8114}
+.logo{font-size:42px}.badge{display:inline-block;background:var(--accent2);color:#5b3db5;padding:7px 12px;border-radius:999px;font-size:13px;margin:8px 0 12px}
+h1{font-size:31px;line-height:1.45;margin:5px 0 12px}h2{font-size:22px;line-height:1.9;margin:10px 0}
+p{line-height:2}.muted{color:var(--muted)}.note{font-size:12px;color:#777;background:#faf9fd;padding:12px 14px;border-radius:14px;margin-top:18px}
+.btn{width:100%;border:0;border-radius:16px;padding:15px;margin-top:10px;font-size:16px;font-weight:700;cursor:pointer}
+.primary{background:var(--accent);color:#fff}.secondary{background:#f0eef7;color:#403b52}
+.progress{height:9px;background:#eeeaf6;border-radius:99px;overflow:hidden;margin:12px 0 25px}.bar{height:100%;background:var(--accent);transition:.25s}
+.options{display:grid;gap:11px}.option{border:2px solid var(--line);background:white;border-radius:17px;padding:15px;text-align:right;font-size:15px;cursor:pointer;line-height:1.7}.option:hover{border-color:#9278e4;background:#fbf9ff}
+.hidden{display:none}.center{text-align:center}.icon{font-size:70px}.resultTitle{font-size:30px;font-weight:800;margin:5px 0 15px}
+.tags span{display:inline-block;background:#f4f1fb;border-radius:999px;padding:7px 11px;margin:4px;font-size:12px}
+.section{border-top:1px solid var(--line);margin-top:22px;padding-top:18px}.share{background:#f7f4ff;border-radius:18px;padding:15px;margin-top:18px}
+@media(max-width:500px){.card{padding:22px;border-radius:22px}h1{font-size:26px}.resultTitle{font-size:26px}}
+@media print{body{background:#fff}.btn,.share,.note{display:none}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section class="card" id="start">
+<div class="logo">🧠✨</div>
+<span class="badge">کانون سلامت روان دانشکده</span>
+<h1>تو کدوم مدلی؟</h1>
+<p class="muted">یک تست کوتاه خودشناسی برای شناخت بهتر سبک فکر کردن، ارتباط با دیگران، نظم، هیجان و واکنش به تغییر.</p>
+<p>۳۰ سؤال، حدود ۵ دقیقه، و در پایان یک تیپ شخصیتی بامزه که بر اساس الگوی پاسخ‌هایت انتخاب می‌شود.</p>
+<button class="btn primary" onclick="startTest()">شروع تست 🚀</button>
+<div class="note">این تست برای خودشناسی و سرگرمی طراحی شده و ابزار تشخیص اختلال، سلامت روان یا ارزیابی بالینی نیست. پاسخ‌ها در این نسخه در جایی ارسال یا ذخیره نمی‌شوند.</div>
+</section>
+
+<section class="card hidden" id="quiz">
+<span class="badge" id="count"></span>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<h2 id="question"></h2>
+<div class="options" id="options"></div>
+</section>
+
+<section class="card hidden center" id="result">
+<div class="icon" id="rIcon"></div>
+<span class="badge">الگوی غالب پاسخ‌های تو</span>
+<div class="resultTitle" id="rName"></div>
+<p class="muted" id="rText"></p>
+<div class="tags" id="rTags"></div>
+<div class="section" style="text-align:right">
+<b>یه یادآوری کوچیک 🌱</b>
+<p class="muted">هیچ تیپی بهتر یا بدتر از تیپ دیگری نیست. این نتیجه فقط یک برداشت کلی از پاسخ‌های همین تست است و آدم‌ها خیلی پیچیده‌تر از یک برچسب هستند.</p>
+</div>
+<div class="share">
+<b>نتیجه‌ات رو نگه دار 📸</b>
+<p class="muted">می‌توانی از همین صفحه اسکرین‌شات بگیری یا با دکمه زیر آن را چاپ/ذخیره کنی.</p>
+</div>
+<button class="btn primary" onclick="window.print()">ذخیره / چاپ نتیجه 🖨️</button>
+<button class="btn secondary" onclick="restart()">انجام دوباره 🔄</button>
+<p class="note">اگر حال روانی‌ات خوب نیست یا موضوعی واقعاً آزارت می‌دهد، نتیجه این تست جای صحبت با مشاور یا متخصص سلامت روان را نمی‌گیرد.</p>
+</section>
+</div>
+
+<script>
+const Q=[
+["وقتی مدت زیادی تنها هستم، معمولاً دلم می‌خواهد با کسی صحبت کنم.","E"],
+["از امتحان کردن تجربه‌ها و فعالیت‌هایی که قبلاً انجام نداده‌ام لذت می‌برم.","O"],
+["وقتی کاری را شروع می‌کنم، معمولاً تا تمام شدنش پیگیر می‌مانم.","C"],
+["اگر متوجه شوم یکی از دوستانم حال خوبی ندارد، معمولاً سریع متوجه می‌شوم.","A"],
+["بعد از یک اتفاق ناخوشایند، ممکن است مدت زیادی ذهنم درگیر آن بماند.","N"],
+["اگر برنامه‌ای که ریخته‌ام به‌هم بخورد، معمولاً می‌توانم خودم را با شرایط جدید وفق بدهم.","R"],
+["در جمع‌های جدید معمولاً نسبتاً راحت سر صحبت را باز می‌کنم.","E"],
+["گاهی یک موضوع ساده می‌تواند ساعت‌ها ذهنم را به فکر و خیال ببرد.","O"],
+["کارهایم را معمولاً تا لحظه آخر عقب نمی‌اندازم.","C"],
+["اگر کسی با من درد دل کند، معمولاً سعی می‌کنم قبل از قضاوت کردن حرفش را بفهمم.","A"],
+["وقتی تحت فشارم، احساساتم ممکن است روی تصمیم‌هایم تأثیر زیادی بگذارند.","N"],
+["تغییر ناگهانی برنامه‌ها معمولاً برایم قابل مدیریت است.","R"],
+["بعد از بودن در یک جمع شلوغ، معمولاً هنوز انرژی اجتماعی دارم.","E"],
+["از بحث کردن درباره ایده‌های عجیب، فلسفی یا «اگر این‌طور می‌شد چه؟» لذت می‌برم.","O"],
+["اگر چند کار همزمان داشته باشم، معمولاً می‌توانم برایشان اولویت تعیین کنم.","C"],
+["گاهی برای اینکه کسی ناراحت نشود، از خواسته خودم می‌گذرم.","A"],
+["وقتی آینده نامشخص است، معمولاً زیاد درباره اینکه «چه می‌شود؟» فکر می‌کنم.","N"],
+["وقتی شرایط طبق انتظارم پیش نمی‌رود، می‌توانم نسبتاً سریع راه دیگری پیدا کنم.","R"],
+["اگر موضوع جالبی برای صحبت وجود داشته باشد، می‌توانم مدت زیادی با دیگران گفتگو کنم.","E"],
+["معمولاً ترجیح می‌دهم یک روش جدید را امتحان کنم تا اینکه همیشه همان روش قدیمی را تکرار کنم.","O"],
+["محیط مرتب و برنامه مشخص باعث می‌شود احساس کنم کنترل بیشتری روی کارهایم دارم.","C"],
+["اگر بین دو نفر اختلافی پیش بیاید، معمولاً می‌توانم احساس هر دو طرف را درک کنم.","A"],
+["وقتی اشتباهی می‌کنم، ممکن است مدت زیادی خودم را بابت آن سرزنش کنم.","N"],
+["در موقعیت‌های غیرمنتظره معمولاً می‌توانم آرام بمانم و ببینم چه کاری از دستم برمی‌آید.","R"],
+["معمولاً ترجیح می‌دهم مسئله‌ای را با یک دوست در میان بگذارم تا اینکه کاملاً تنها با آن کنار بیایم.","E"],
+["گاهی در ذهنم سناریوها و داستان‌های مختلفی می‌سازم که هیچ‌وقت اتفاق نمی‌افتند.","O"],
+["وقتی هدفی برای خودم تعیین می‌کنم، معمولاً برای رسیدن به آن برنامه می‌ریزم.","C"],
+["حال و احساس آدم‌های اطرافم می‌تواند روی حال خودم هم تأثیر بگذارد.","A"],
+["در دوره‌های پراسترس، ممکن است خواب، تمرکز یا آرامشم بیشتر از حالت عادی به‌هم بریزد.","N"],
+["وقتی با یک مشکل مواجه می‌شوم، معمولاً سعی می‌کنم به‌جای گیر کردن روی آن، ببینم چه کاری می‌توانم انجام دهم.","R"]
+];
+const TYPES=[
+["☕","قهوه‌خورِ متفکر","قبل از تصمیم گرفتن معمولاً موضوع را از چند زاویه بررسی می‌کنی. دقت و فکر عمیق از نقاط قوت توست؛ فقط گاهی به مغزت اجازه بده شیفتش تمام شود!","دقت","تفکر عمیق","تحلیل"],
+["🦦","سمورِ ریلکس","معمولاً در شلوغی‌ها راهی برای حفظ آرامشت پیدا می‌کنی. انعطاف‌پذیری‌ات نقطه قوت توست؛ فقط مراقب «بعداً انجامش می‌دم» باش!","آرامش","انعطاف","سازگاری"],
+["🐿️","سنجابِ همیشه درگیر","انرژی زیادی داری و دوست داری چند کار را جلو ببری. شروع کردن و حرکتت قوی است؛ گاهی فقط یک کار را انتخاب کن و نفس بکش!","انرژی","چندکاره","عمل‌گرایی"],
+["🌙","فعالِ نیمه‌شب","خلوت و زمان شخصی احتمالاً برایت مهم است و ایده‌هایت گاهی شب‌ها روشن‌تر می‌شوند. فقط خواب را قربانی همه فکرها نکن!","خلوت","خلاقیت","دنیای درونی"],
+["🫶","رفیقِ همه‌کس","ارتباط و احساس تعلق برایت مهم است و معمولاً حال دیگران را خوب می‌فهمی. یادت باشد قرار نیست مسئول حال خوب همه باشی.","همدلی","ارتباط","حمایت"],
+["🐈","گربه‌ی خودکفا","استقلال برایت ارزشمند است و ترجیح می‌دهی بسیاری از مسائل را خودت مدیریت کنی. کمک خواستن در زمان مناسب، استقلالت را کم نمی‌کند.","استقلال","مرزبندی","خوداتکایی"],
+["🦋","یهویی‌باز","تجربه‌های تازه و تغییر برایت جذاب‌اند و احتمالاً از قابل‌پیش‌بینی بودن زیاد خسته می‌شوی. فقط قبل از پریدن، یک نگاه به محل فرود بینداز!","کنجکاوی","تجربه‌طلبی","انعطاف"],
+["🦉","جغدِ تحلیلگر","ذهن دقیق و جزئیات‌بین داری و دوست داری قبل از تصمیم‌گیری خوب فکر کنی. فقط یادت باشد فکر بیشتر همیشه به معنی تصمیم بهتر نیست.","تحلیل","دقت","منطق"],
+["🐨","کوالای «بیخیال بابا»","استعداد خوبی در کم کردن تنش داری و معمولاً همه‌چیز را فاجعه نمی‌کنی. فقط بعضی مسائل ارزش پیگیری دارند!","آرامش","سازگاری","کم‌تنشی"],
+["🦊","روباهِ راه‌بلد","حتی وقتی برنامه مشخصی نداری، معمولاً در موقعیت راهی پیدا می‌کنی. سازگاری و موقعیت‌سنجی از قدرت‌های تو هستند.","سازگاری","موقعیت‌سنجی","حل مسئله"],
+["🚀","موشکِ بدون ترمز","هدفمندی و انرژی بالایی داری و دوست داری کارها را جلو ببری. فقط یادت باشد استراحت بخشی از مسیر است.","انگیزه","هدفمندی","عمل‌گرایی"],
+["🌧️","ابرِ فکرمشغول","احتمالاً اتفاق‌ها را عمیق پردازش می‌کنی و نسبت به جزئیات هیجانی حساس هستی. گاهی لازم نیست برای هر اتفاق ده سناریو بسازی.","حساسیت","همدلی","تأمل"],
+["🎤","میکروفنِ روشن","ارتباط گرفتن با آدم‌ها برایت طبیعی و انرژی‌بخش است. صدایت شنیده می‌شود؛ فقط گاهی نوبت گوش دادن را هم به دیگران بده!","اجتماعی","بیان","انرژی"],
+["🎧","هدفون به گوش","دنیای درونی قوی و زمان شخصی برایت مهم است. تنهایی برای تو لزوماً به معنی تنهایی نیست؛ گاهی یعنی شارژ شدن.","خلوت","استقلال","تأمل"],
+["🧃","آبمیوه‌ی انرژی‌زا","معمولاً به جمع انرژی می‌دهی و روحیه دیگران را بالا می‌بری. اما لازم نیست همیشه پرانرژی باشی.","مثبت‌نگری","انرژی","اجتماعی"],
+["🪴","گیاهِ جان‌سخت","ممکن است همیشه پرسر‌وصدا نباشی، اما در شرایط سخت توان ادامه دادن و رشد کردن داری. قرار نیست با سرعت بقیه رشد کنی.","تاب‌آوری","رشد","آرامش"],
+["🐧","پنگوئنِ پایه","وفاداری و قابل‌اعتماد بودن برایت مهم است و احتمالاً آدم‌ها راحت به تو تکیه می‌کنند. همان‌قدر که حواست به دیگران هست، حواست به خودت هم باشد.","وفاداری","همدلی","حمایت"],
+["🎨","نقاشِ ذهنی","ذهنت با «مثل بقیه فکر کن» چندان سازگار نیست! نگاه تازه و ایده‌های متفاوت از نقاط قوت تو هستند.","خلاقیت","تخیل","گشودگی"],
+["🛋️","سلطانِ لم‌دادن","بلدی گاهی ترمز بکشی و از لحظه لذت ببری. استراحت برایت مهم است؛ فقط مراقب باش «فردا شروع می‌کنم» دائمی نشود!","استراحت","تعادل","آرامش"],
+["✨","چراغِ روشن","معمولاً حتی وسط شرایط سخت دنبال یک نقطه روشن می‌گردی و می‌توانی به دیگران هم امید بدهی. مثبت بودن یعنی جا دادن احساسات سخت، نه انکارشان.","امید","الهام‌بخشی","تاب‌آوری"]
+];
+// Target vectors for E,O,C,A,N,R; the result is the closest profile.
+// These are a custom demo model, not a validated clinical instrument.
+const T=[
+[13,17,17,11,12,13],[9,10,10,12,8,18],[17,13,12,12,10,15],[8,18,11,13,13,13],
+[17,11,12,19,12,12],[7,12,13,8,8,17],[15,19,8,10,11,18],[8,16,18,10,11,12],
+[8,9,9,11,7,17],[12,13,11,11,8,19],[17,16,18,10,7,18],[10,17,10,17,19,7],
+[19,12,10,12,9,14],[6,16,12,9,10,15],[18,14,12,16,8,16],[10,11,15,14,10,18],
+[13,10,12,18,11,14],[11,20,8,11,12,14],[6,8,7,9,6,15],[15,16,13,16,9,18]
+];
+let i=0,s={E:0,O:0,C:0,A:0,N:0,R:0};
+function startTest(){document.getElementById("start").classList.add("hidden");document.getElementById("quiz").classList.remove("hidden");showQ()}
+function showQ(){let q=Q[i];document.getElementById("count").textContent=`سؤال ${i+1} از ${Q.length}`;document.getElementById("bar").style.width=(i/Q.length*100)+"%";document.getElementById("question").textContent=q[0];let b=document.getElementById("options");b.innerHTML="";["کاملاً مخالفم","بیشتر مخالفم","بیشتر موافقم","کاملاً موافقم"].forEach((x,n)=>{let z=document.createElement("button");z.className="option";z.textContent=x;z.onclick=()=>answer(n+1);b.appendChild(z)})}
+function answer(v){s[Q[i][1]]+=v;i++;i<Q.length?showQ():finish()}
+function finish(){let keys=["E","O","C","A","N","R"],v=keys.map(k=>s[k]);let best=0,bd=1e9;T.forEach((t,j)=>{let d=t.reduce((a,x,k)=>a+Math.abs(x-v[k]),0);if(d<bd){bd=d;best=j}});let t=TYPES[best];document.getElementById("quiz").classList.add("hidden");document.getElementById("result").classList.remove("hidden");document.getElementById("bar").style.width="100%";document.getElementById("rIcon").textContent=t[0];document.getElementById("rName").textContent=t[1];document.getElementById("rText").textContent=t[2];document.getElementById("rTags").innerHTML=t.slice(3).map(x=>`<span>${x}</span>`).join("")}
+function restart(){i=0;s={E:0,O:0,C:0,A:0,N:0,R:0};document.getElementById("result").classList.add("hidden");document.getElementById("quiz").classList.remove("hidden");showQ()}
+</script>
+</body>
+</html>
